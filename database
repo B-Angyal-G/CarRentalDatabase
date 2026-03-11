@@ -1,0 +1,107 @@
+CREATE DATABASE CarRentalDb;
+GO
+
+USE CarRentalDb;
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+DROP TABLE IF EXISTS Cars
+DROP TABLE IF EXISTS Clients
+DROP TABLE IF EXISTS Fuel
+DROP TABLE IF EXISTS CarStatus
+DROP TABLE IF EXISTS Admins
+GO
+
+
+-- Ügyfél tábla
+CREATE TABLE [dbo].[Clients](
+    [Id] [int] IDENTITY(1,1) PRIMARY KEY,
+    [DrivingLicence] [nvarchar](10) NOT NULL,
+    [Name] [nvarchar](80) NOT NULL,
+    [BirthDate] [date] NOT NULL,
+    [Email] [nvarchar](40) NOT NULL,
+    [Phone] [nvarchar](15) NOT NULL
+);
+GO
+
+
+-- Autók üzemanyaga
+CREATE TABLE [dbo].[Fuel](
+    [Id] [int] PRIMARY KEY,
+    [Name] [nvarchar](20) NOT NULL
+);
+INSERT INTO [dbo].[Fuel] VALUES (1, 'Petrol'), (2, 'Diesel');
+GO
+
+-- Autók státusza
+CREATE TABLE [dbo].[CarStatus](
+    [Id] [int] PRIMARY KEY,
+    [Name] [nvarchar](20) NOT NULL
+);
+INSERT INTO [dbo].[CarStatus] VALUES (1, 'Available'), (2, 'Rent'), (3, 'Out of order');
+GO
+
+-- Autók tábla
+CREATE TABLE [dbo].[Cars](
+    [Id] [int] IDENTITY(1,1) PRIMARY KEY,
+    [RegNum] [nvarchar](10) NOT NULL UNIQUE,
+    [Brand] [nvarchar](15) NOT NULL,
+    [Model] [nvarchar](20) NOT NULL,
+    [FuelId] [int] NOT NULL,
+    [StatusId] [int] NOT NULL,
+    [ClientID] [int] NULL,
+    
+    -- Idegen kulcsok
+    CONSTRAINT [FK_Cars_Fuel] FOREIGN KEY ([FuelID]) REFERENCES [dbo].[Fuel] ([Id]),
+    CONSTRAINT [FK_Cars_CarStatus] FOREIGN KEY ([StatusId]) REFERENCES [dbo].[CarStatus] ([Id]),
+    CONSTRAINT [FK_Cars_Clients] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Clients] ([Id])
+);
+GO
+
+
+-- Adminok
+CREATE TABLE [dbo].[Admins](
+    [Id] [int] IDENTITY(1,1) PRIMARY KEY,
+    [Name] [nvarchar](80) NOT NULL,
+    [BirthDate] [date] NOT NULL,
+    [Email] [nvarchar](40) NOT NULL,
+    [Phone] [nvarchar](15) NOT NULL
+);
+GO
+
+
+USE CarRentalDb;
+GO
+
+--TESZTADATOK
+-- 1. Ügyfelek feltöltése
+INSERT INTO [dbo].[Clients] ([DrivingLicence], [Name], [BirthDate], [Email], [Phone])
+VALUES 
+('AB123456', 'Kovács János', '1985-05-12', 'kovacs.janos@email.hu', '+36201234567'),
+('CD789012', 'Nagy Erzsébet', '1992-11-23', 'n.erzsi@provider.com', '+36309876543'),
+('EF345678', 'Tóth Gábor', '1978-02-28', 'tothgabor88@freemail.hu', '+36705554433'),
+('GH901234', 'Kiss Anikó', '2000-08-15', 'aniko.kiss@cegnev.hu', '+36208887766'),
+('IJ567890', 'Molnár Péter', '1995-06-30', 'm.peti@citromail.hu', '+36302221100');
+GO
+
+-- 2. Adminok feltöltése
+INSERT INTO [dbo].[Admins] ([Name], [BirthDate], [Email], [Phone])
+VALUES 
+('Szabó Béla', '1980-01-01', 'admin.bela@carrental.hu', '+3612223333'),
+('Horváth Mária', '1988-04-10', 'mancika.admin@carrental.hu', '+3614445555');
+GO
+
+-- 3. Autók feltöltése
+INSERT INTO [dbo].[Cars] ([RegNum], [Brand], [Model], [FuelId], [StatusId], [ClientID])
+VALUES 
+('AA-BB-123', 'Toyota', 'Corolla', 1, 1, NULL),      
+('AA-CC-456', 'Volkswagen', 'Golf', 2, 2, 1),        
+('RB-789-XY', 'Ford', 'Focus', 1, 1, NULL),         
+('NM-001-ZA', 'Skoda', 'Octavia', 2, 3, NULL),     
+('ZZ-999-KK', 'BMW', '320d', 2, 2, 3),            
+('EE-222-LL', 'Opel', 'Astra', 1, 1, NULL),      
+('XY-555-AA', 'Audi', 'A4', 2, 2, 5);           
+GO
