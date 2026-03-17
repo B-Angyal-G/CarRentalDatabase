@@ -3,17 +3,13 @@ using System.Collections.Generic;
 
 namespace Berauto.Models;
 
-public partial class Admin
+public partial class Role
 {
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
 
-    public DateOnly BirthDate { get; set; }
-
-    public string Email { get; set; } = null!;
-
-    public string Phone { get; set; } = null!;
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
     
     public override string ToString()
     {
