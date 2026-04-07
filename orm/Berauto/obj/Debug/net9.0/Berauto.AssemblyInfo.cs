@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Berauto")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cf6f2247b12a5a8e9c1a4b60a2fd63f8797fe3de")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6180dcf75a6bafb60cb3f802795714153549e231")]
 [assembly: System.Reflection.AssemblyProductAttribute("Berauto")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Berauto")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
